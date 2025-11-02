@@ -1,1 +1,55 @@
 // app global css in SCSS form
+.background {
+  background-color: rgba(0, 0, 0, 0.5);
+  background-image: url('icons/library-background.jpg');
+  /* Cover the entire viewport */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-blend-mode: darken;
+}
+
+.input-field div {
+  color: $secondary;
+}
+
+.input-field input {
+  color: white;
+}
+
+.main-header {
+  background-color: rgba(16, 16, 16, 0.2);
+}
+
+.dark50 {
+  background-color: rgba(19, 19, 19, 0.5);
+  color: rgba($color: #ffffff, $alpha: 1);
+}
+
+.q-field__native,
+.q-field__prefix,
+.q-field__suffix,
+.q-field__input {
+  color: white;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.teal-dropdown {
+  box-shadow: 0 1px 0px $primary !important;
+}
+
+.q-field--filled .q-field__control {
+  border-bottom: 1px solid $primary;
+  box-shadow: none !important;
+}
+
+//Mobile online styling
+@media (max-width: 767px) {
+  .auth-container {
+    justify-content: flex-start !important;
+  }
+}

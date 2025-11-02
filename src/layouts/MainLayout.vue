@@ -1,43 +1,13 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
-
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
-    </q-header>
-
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
-      <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
-
-        <EssentialLink
-          v-for="link in linksList"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-    </q-drawer>
+  <q-layout view="lHh Lpr lFf" class="background">
+    <q-footer bordered class="bg-grey-10 text-primary">
+      <q-tabs no-caps active-color="primary" indicator-color="transparent" class="text-orange" v-model="tab">
+        <q-route-tab v-if="userStore.user.id" name="courses" label="Courses" icon="book" to="/courses" exact />
+        <q-route-tab v-if="userStore.user.id" name="profile" label="Profile" icon="account_circle" to="/profile" exact />
+        <q-route-tab v-if="!userStore.user.id" name="login" label="Login" to="/login" exact />
+        <q-route-tab v-if="!userStore.user.id" name="register" label="Register" to="/register" exact />
+      </q-tabs>
+    </q-footer>
 
     <q-page-container>
       <router-view />
@@ -46,57 +16,30 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
+import { onMounted } from 'vue'
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { useUserStore } from 'src/stores/userStore'
+import { useInitStore } from 'src/stores/initStore.js'
+// import { LocalStorage } from 'quasar'
 
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
+const userStore = useUserStore()
+const route = useRoute()
+
+const tab = ref(route.name)
+const initStore = useInitStore()
+
+onMounted(async () => {
+  // Only run if userTypes is not already in LocalStorage
+  // if (!LocalStorage.getItem('userTypes')) {
+    await initStore.initialiseCommonLookups()
+  // }
+})
+
+watch(
+  () => route.name,
+  (newName) => {
+    tab.value = newName
   }
-]
-
-const leftDrawerOpen = ref(false)
-
-function toggleLeftDrawer () {
-  leftDrawerOpen.value = !leftDrawerOpen.value
-}
+)
 </script>
