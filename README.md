@@ -17,6 +17,8 @@ List all required tools and versions:
 - Node.js (>=18.x) and npm/yarn
 
 - Quasar CLI (npm install -g @quasar/cli)
+  
+- Pinia
 
 - PHP (>=8.2)
 
@@ -29,6 +31,11 @@ List all required tools and versions:
 yarn
 # or
 npm install
+```
+
+# Install Pinia
+```bash
+npm install pinia
 ```
 
 ### Start the app in development mode (hot-code reloading, error reporting, etc.)
