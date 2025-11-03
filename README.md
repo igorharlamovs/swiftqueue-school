@@ -33,7 +33,7 @@ yarn
 npm install
 ```
 
-# Install Pinia
+## Install Pinia
 ```bash
 npm install pinia
 ```
@@ -43,23 +43,23 @@ npm install pinia
 quasar dev
 ```
 
-## Backend Setup
-# Navigate to backend folder
+# Backend Setup
+## Navigate to backend folder
 ```bash
 cd <backend_folder>
 ```
 
-# Install PHP dependencies if any
+## Install PHP dependencies if any
 ```bash
 composer install
 ```
 
-# Setup database
+## Setup database
 1. Create a database (e.g., swiftqueue_school)
 2. Import your SQL schema
 3. Update DB config file (db.php) with credentials
 
-# Run PHP server
+## Run PHP server
 ```bash
 php -S localhost:8000
 ```
