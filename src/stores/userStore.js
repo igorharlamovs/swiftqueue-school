@@ -1,9 +1,12 @@
 import { defineStore } from 'pinia'
 import { api } from 'boot/axios'
 import { LocalStorage, Loading, Notify } from 'quasar'
+import { useInitStore } from './initStore'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
+    initStore: useInitStore(),
+
     formData: {
       name: null,
       email: null,
@@ -16,21 +19,25 @@ export const useUserStore = defineStore('user', {
       id: null,
       name: null,
       email: null,
-      password: null,
-      userType: null,
+      userTypeId: null,
     },
   }),
 
-  getters: {},
+  getters: {
+    isStudent: (state) => state.initStore.userTypeById(state.user.userTypeId).typeVariable == 'student',
+    isAdmin: (state) => state.initStore.userTypeById(state.user.userTypeId).typeVariable == 'admin'
+  },
 
   actions: {
     async login() {
       try {
         Loading.show({ message: 'Loading...' })
 
-        let response = await api.post('auth/login.php', this.formData)
+        let response = await api.post('/login', this.formData)
 
         this.setUserData(response)
+        
+        window.location.href = '/'
       } catch (error) {
         Notify.create({
           type: 'negative',
@@ -38,21 +45,24 @@ export const useUserStore = defineStore('user', {
           message: 'Invalid Credentials',
         })
         console.log(error)
+        Loading.hide()
       }
     },
 
     async logout() {
       LocalStorage.clear()
-      window.location.href = '/'
+      window.location.href = '/courses'
     },
 
     async register() {
       try {
         Loading.show({ message: 'Loading...' })
 
-        let response = await api.post('register', this.formData)
+        let response = await api.post('/register', this.formData)
 
         this.setUserData(response)
+        
+        window.location.href = '/'
       } catch (error) {
         Notify.create({
           type: 'negative',
@@ -64,13 +74,13 @@ export const useUserStore = defineStore('user', {
       }
     },
 
-    async updateUser() {
+    async updateUser(formData) {
       try {
         Loading.show({ message: 'Updating User...' })
 
-        const response = await api.patch(`/user/${this.user.id}`, this.user)
+        const response = await api.post('/updateprofile', formData)
 
-        LocalStorage.set('user', response.data.user)
+        this.setUserData(response)
 
         Notify.create({
           type: 'positive',
@@ -102,14 +112,11 @@ export const useUserStore = defineStore('user', {
         id: user.id,
         name: user.name,
         email: user.email,
-        password: user.password,
-        userType: user.userType,
+        userTypeId: user.userTypeId,
       }
 
       LocalStorage.set('user', this.user)
       LocalStorage.set('accessToken', userData.data.data.token)
-
-      window.location.href = '/'
     },
 
     resetFormData() {

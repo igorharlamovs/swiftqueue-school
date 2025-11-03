@@ -21,7 +21,7 @@ import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useUserStore } from 'src/stores/userStore'
 import { useInitStore } from 'src/stores/initStore.js'
-// import { LocalStorage } from 'quasar'
+import { LocalStorage } from 'quasar'
 
 const userStore = useUserStore()
 const route = useRoute()
@@ -30,10 +30,10 @@ const tab = ref(route.name)
 const initStore = useInitStore()
 
 onMounted(async () => {
-  // Only run if userTypes is not already in LocalStorage
-  // if (!LocalStorage.getItem('userTypes')) {
+  // Only run if lookup types are not already in LocalStorage
+  if (!LocalStorage.getItem('userTypes') || !LocalStorage.getItem('courseStatusTypes')) {
     await initStore.initialiseCommonLookups()
-  // }
+  }
 })
 
 watch(

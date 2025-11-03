@@ -2,6 +2,7 @@
 try {
     require_once __DIR__ . '/../models/BaseModel.php';
     require_once __DIR__ . '/../models/UserType.php';
+    require_once __DIR__ . '/../models/CourseStatusType.php';
 
     //Fetch user types
     $userTypeModel = new UserType($pdo);
@@ -15,14 +16,25 @@ try {
         ];
     }
 
-    //Fetch course types
-    $courseStatusTypes = [];
+    //Fetch course status types
+    $courseStatusTypeModel = new CourseStatusType($pdo);
+    $courseStatusTypesList = $courseStatusTypeModel->all();
+
+    foreach ($courseStatusTypesList as $type) {
+        $courseStatusTypes[] = [
+            'id' => $type->id,
+            'typeName' => $type->typeName,
+            'typeVariable' => $type->typeVariable,
+        ];
+    }
 
     echo json_encode([
         'success' => true,
         'message' => 'Data initialised successfully',
-        'userTypes' => $userTypes,
-        'courseStatusTypes' => $courseStatusTypes
+        'data' => [
+            'userTypes' => $userTypes,
+            'courseStatusTypes' => $courseStatusTypes
+        ]
     ]);
 
 } catch (Exception $e) {

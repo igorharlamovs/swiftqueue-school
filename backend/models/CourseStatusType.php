@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/BaseModel.php';
 
-class UserType extends BaseModel {
-    protected $table = 'usertypes';
+class CourseStatusType extends BaseModel {
+    protected $table = 'coursetatustypes';
 
     public $id;
     public $typeName;

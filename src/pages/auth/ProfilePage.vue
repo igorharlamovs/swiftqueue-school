@@ -14,9 +14,9 @@
       </div>
 
       <!-- Profile Form -->
-      <q-form @submit="userStore.updateUser" class="q-gutter-y-md">
+      <q-form @submit.prevent="submitForm" class="q-gutter-y-md">
         <q-input
-          v-model="userStore.user.name"
+          v-model="formData.name"
           label="User Name"
           input-style="color: white"
           label-color="orange"
@@ -27,7 +27,7 @@
         />
 
         <q-input
-          v-model="userStore.user.email"
+          v-model="formData.email"
           type="email"
           label="Email"
           input-style="color: white"
@@ -38,21 +38,57 @@
           :rules="[rules.required, rules.max255]"
         />
 
-        <!-- Actions -->
+        <q-select
+          auto-width
+          class="primary-shadow"
+          label-color="orange"
+          dark
+          bg-color="dark"
+          v-model="formData.userTypeId"
+          :options="initStore.userTypes"
+          option-label="typeName"
+          option-value="id"
+          emit-value
+          map-options
+          label="User Type"
+          :behavior="$q.screen.lt.md ? 'dialog' : 'menu'"
+          popup-content-class="teal-dropdown"
+          filled
+          :rules="[rules.required]"
+        />
+
         <div class="row q-mt-lg justify-end">
           <q-btn label="Update" type="submit" color="teal" class="q-px-md" />
           <q-btn label="Logout" @click="userStore.logout" color="orange" flat class="q-ml-sm q-px-md" />
         </div>
       </q-form>
+
     </q-card>
   </q-page>
 </template>
 
 <script setup>
+import { reactive } from 'vue'
 import { useQuasar } from 'quasar'
 import { useUserStore } from 'src/stores/userStore.js'
+import { useInitStore } from 'src/stores/initStore.js'
 import { validationRules as rules } from 'src/validation/genericRules.js'
 
 const $q = useQuasar()
 const userStore = useUserStore()
+const initStore = useInitStore()
+
+// Local reactive copy of the user for the form
+const formData = reactive({
+  id: userStore.user.id,
+  name: userStore.user.name,
+  email: userStore.user.email,
+  userTypeId: userStore.user.userTypeId
+})
+
+// Submit handler
+function submitForm() {
+  // Push local form values to the store
+  userStore.updateUser(formData)
+}
 </script>

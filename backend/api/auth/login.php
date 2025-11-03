@@ -11,14 +11,13 @@ try {
         throw new Exception('Email and password are required.');
     }
 
-    $user = new User($pdo);
-    $user->setAttributes(['email' => $email]);
+    $userModel = new User($pdo);
 
-    if (!$user->emailExists() || !$user->verifyPassword($password)) {
-        throw new Exception('Invalid credentials.');
+    $user = $userModel->findByEmailAndPassword($email, $password);
+
+    if(empty($user)) {
+        throw new Exception('Invalid credentials');
     }
-
-    $user = $user->findByEmailAndPassword($email, $password);
 
     // Generate a session token
     $token = bin2hex(random_bytes(32));

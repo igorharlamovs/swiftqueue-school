@@ -6,30 +6,41 @@ try {
     // Decode incoming JSON
     $data = json_decode(file_get_contents('php://input'), true);
 
+    $userId = $data['id'] ?? '';
     $name = $data['name'] ?? '';
     $email = $data['email'] ?? '';
-    $password = $data['password'] ?? '';
-    $userType = $data['userType'] ?? '';
+    $userTypeId = $data['userTypeId'] ?? '';
 
     // Validate input
-    if (!$name || !$email || !$password || empty($userType)) {
+    if (empty($userId) || empty($name) || empty($email) || empty($userTypeId)) {
         throw new Exception('All fields are required');
     }
 
-    // Create New User
-    $user = new User($pdo);
+    // Update User
+    $userModel = new User($pdo);
+
+    // Fetch the existing user
+    $user = $userModel->findById($userId);
+
+    if (!$user) {
+        throw new Exception('User not found');
+    }
+
+    // Update only provided fields
+    $updatableFields = ['name', 'email', 'userTypeId'];
+    foreach ($updatableFields as $field) {
+        if (array_key_exists($field, $data)) {
+            $user->$field = $data[$field];
+        }
+    }
 
     // Check if email already exists
-    if ($user->emailExists()) {
+    if ($userModel->emailExists()) {
         throw new Exception('Email already registered');
     }
 
-    $user = $user->create([
-        'name' => $name,
-        'email' => $email,
-        'password' => $user->setPassword($password),
-        'userTypeId' => $userType['id']
-    ]);
+    // Save updates
+    $user->update($userId);
 
     // Generate a random token for this session
     $token = bin2hex(random_bytes(32));
@@ -47,7 +58,7 @@ try {
     http_response_code(500);
     echo json_encode([
         'success' => false,
-        'message' => 'Registration failed',
+        'message' => 'Failed updating user',
         'error' => $e->getMessage()
     ]);
 }
