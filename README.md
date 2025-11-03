@@ -8,7 +8,7 @@ You can register as different user types, student, admin and teacher
  - Teachers can create course, they will also be able to edit and delete courses created by them
  - Admins can create, edit and delete ANY course, they do not have to belong to them
 
-##Tech stack: Quasar (Vue 3), Pinia, Axios, PHP backend, MySQL
+## Tech stack: Quasar (Vue 3), Pinia, Axios, PHP backend, MySQL
 
 ## Prerequisites
 
@@ -36,7 +36,7 @@ npm install
 quasar dev
 ```
 
-##Backend Setup
+## Backend Setup
 # Navigate to backend folder
 ```bash
 cd <backend_folder>
@@ -48,9 +48,9 @@ composer install
 ```
 
 # Setup database
-# 1. Create a database (e.g., swiftqueue_school)
-# 2. Import your SQL schema
-# 3. Update DB config file (db.php) with credentials
+1. Create a database (e.g., swiftqueue_school)
+2. Import your SQL schema
+3. Update DB config file (db.php) with credentials
 
 # Run PHP server
 ```bash
