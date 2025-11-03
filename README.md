@@ -55,9 +55,8 @@ composer install
 ```
 
 ## Setup database
-1. Create a database (e.g., swiftqueue_school)
-2. Import your SQL schema
-3. Update DB config file (db.php) with credentials
+1. Import schema SOURCE backend/database/swiftqueue_school_schema.sql;
+2. Update DB config file (db.php) with credentials
 
 ## Run PHP server
 ```bash
