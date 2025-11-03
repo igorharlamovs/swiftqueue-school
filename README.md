@@ -44,9 +44,9 @@ quasar dev
 ```
 
 # Backend Setup
-## Navigate to backend folder
+## Navigate to backend api folder
 ```bash
-cd <backend_folder>
+cd swiftqueue-academy/backend/api
 ```
 
 ## Install PHP dependencies if any
