@@ -167,8 +167,11 @@ export const useCourseStore = defineStore('course', {
       }).onOk(async () => {
         try {
           Loading.show({ message: 'Deleting Course...' })
+          
           await api.delete(`/coursecrud/${courseId}`, { data: { userId: this.userStore.user.id } })
+
           this.courses = this.courses.filter((c) => c.id !== courseId)
+
           Loading.hide()
 
           Notify.create({

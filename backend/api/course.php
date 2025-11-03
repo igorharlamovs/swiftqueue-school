@@ -89,6 +89,13 @@ try {
 
             $course = $courseModel->findById($lastSegment);
 
+            $user = $userModel->findById($userId);
+            $userType = $userTypeModel->findById($user->userTypeId);
+
+            if($userType->typeVariable == 'student' || ($course->userId != $user->id && $userType->typeVariable != 'admin')) {
+                throw new Exception('You are unauthorised to perform this action');
+            }
+
             $deleted = $course->delete($userId);
 
             if (!$deleted) {
@@ -100,8 +107,8 @@ try {
                 'message' => 'Course deleted successfully',
             ]);
             break;
-                // UPDATE course
 
+        // UPDATE course
         case 'PATCH':
             // Decode incoming JSON data
             $data = json_decode(file_get_contents('php://input'), true);
@@ -118,6 +125,15 @@ try {
             $course = $courseModel->findById($lastSegment);
             if (!$course) {
                 throw new Exception('Course not found');
+            }
+
+            $course = $courseModel->findById($lastSegment);
+
+            $user = $userModel->findById($data['sessionUserId']);
+            $userType = $userTypeModel->findById($user->userTypeId);
+
+            if($userType->typeVariable == 'student' || ($course->userId != $user->id && $userType->typeVariable != 'admin')) {
+                throw new Exception('You are unauthorised to perform this action');
             }
 
             // Update only provided fields
