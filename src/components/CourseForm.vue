@@ -34,8 +34,6 @@
         v-model="form.startAt" 
         label-color="orange"
         label="Course Starting On *"
-        mask="YYYY-MM-DD HH:mm"
-        fill-mask
         :rules="[rules.required]"
       >
         <template v-slot:prepend>
@@ -69,8 +67,6 @@
         v-model="form.endAt" 
         label-color="orange"
         label="Course Ending On *"
-        mask="YYYY-MM-DD HH:mm"
-        fill-mask
         :rules="[rules.required]"
       >
         <template v-slot:prepend>

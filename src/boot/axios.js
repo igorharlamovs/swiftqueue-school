@@ -4,7 +4,7 @@ import axios from 'axios'
 import { LocalStorage } from 'quasar'
 
 const api = axios.create({
-  baseURL: 'http://localhost:8000/backend/api/',
+  baseURL: 'http://localhost:8000',
 })
 
 export default boot(({ app }) => {
